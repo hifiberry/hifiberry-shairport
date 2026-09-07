@@ -1,3 +1,23 @@
+hifiberry-shairport (1:5.5.0.1) stable; urgency=medium
+
+    *  Update sharport-sync to 5.5 (was 5.2.3). Multiple security updates,
+     recommended update for all users. Full details can be found in the
+     upstream GitHub release notes.
+     - AirPlay2 client could crash Shairport Sync by sending SETUP request
+       where timingPeerInfo.Addresses array contains non-string element.
+     - AirPlay 2 SETUP session key value length not validated, potentially
+       leaking information or causing crash.
+     - classic-AirPlay using Hammerton decoder negotiating uncompressed PCM
+       session could overflow heap with attacker-controlled data.
+     - Unauthenticated client on AirPlay2 receiver could overflow stack buffer
+       by sending RTSP request with unrecognised method and large body.
+     - Remote, unauthenticated client could crash daemon with two-byte pairing
+       message.
+     - Updates for classic-AirPlay build using (deprecated) tinysvcmdns mDNS
+       library. 
+
+ -- Jon Fanti <hatter@gmail.com>  Mon, 07 Sep 2026 21:12:24 +1000
+
 hifiberry-shairport (1:5.2.3.2) stable; urgency=medium
 
   * postinst: stop writing the WebUI descriptor and icon into
