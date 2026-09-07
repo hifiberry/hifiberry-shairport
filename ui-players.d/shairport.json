@@ -5,7 +5,7 @@
     "icon": "shairport",
     "allow_change": true,
     "maintainer_name": "Jon Fanti",
-    "maintainer_url": "https://github.com/hattersley",
+    "maintainer_url": "https://github.com/hifiberry/hifiberry-shairport/blob/main/MAINTAINERS.md",
     "settings": [
         {
             "key": "airplay_version",
