@@ -143,9 +143,15 @@ DBUSEOF
                 systemctl reload dbus >/dev/null 2>&1 || systemctl reload dbus.service >/dev/null 2>&1 || true
                 HB_UID=$(id -u "$HB_USER" 2>/dev/null)
                 if [ -n "$HB_UID" ] && [ -d "/run/user/$HB_UID" ]; then
+                    # Reload first, so an upgraded unit file is used, and
+                    # try-restart, so a player switched off in the WebUI is not
+                    # started by an upgrade.
                     systemd-run --uid "$HB_UID" --setenv XDG_RUNTIME_DIR="/run/user/$HB_UID" \
                         --pipe --wait --quiet --collect \
-                        systemctl --user restart shairport.service >/dev/null 2>&1 || true
+                        systemctl --user daemon-reload >/dev/null 2>&1 || true
+                    systemd-run --uid "$HB_UID" --setenv XDG_RUNTIME_DIR="/run/user/$HB_UID" \
+                        --pipe --wait --quiet --collect \
+                        systemctl --user try-restart shairport.service >/dev/null 2>&1 || true
                 fi
             fi
         fi

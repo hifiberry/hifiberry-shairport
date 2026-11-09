@@ -1,11 +1,26 @@
 #!/bin/bash
 set -e
 
+# shairport.service is a systemd *user* unit of the HiFiBerry user, so it has
+# to be stopped inside that user's manager: a system-level stop of that name
+# found no unit and left the player running after removal. nqptp is a system
+# unit and is stopped as before.
+user_systemctl() {
+    [ -d /run/systemd/system ] || return 0
+    [ -f /etc/hifiberry.user ] || return 0
+    HB_USER=$(grep -vE '^[[:space:]]*#|^[[:space:]]*$' /etc/hifiberry.user | head -1 | tr -d '[:space:]')
+    [ -n "$HB_USER" ] && getent passwd "$HB_USER" >/dev/null 2>&1 || return 0
+    HB_UID=$(id -u "$HB_USER" 2>/dev/null) || return 0
+    [ -d "/run/user/$HB_UID" ] || return 0
+    systemd-run --uid "$HB_UID" --setenv XDG_RUNTIME_DIR="/run/user/$HB_UID" \
+        --pipe --wait --quiet --collect \
+        systemctl --user "$@" >/dev/null 2>&1 || true
+}
+
 # Stop and disable systemd services on package removal
 if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
+    user_systemctl stop shairport.service
     if [ -d /run/systemd/system ]; then
-        deb-systemd-invoke stop shairport.service >/dev/null || true
-        deb-systemd-helper disable shairport.service >/dev/null || true
         deb-systemd-invoke stop nqptp.service >/dev/null || true
         deb-systemd-helper disable nqptp.service >/dev/null || true
     fi
