@@ -10,7 +10,7 @@
 general = {
   name = "HiFiBerry"; // This is the name the device will advertise to iTunes
   version = "1"; // AirPlay version: "1" for legacy, "2" for AirPlay 2 (default if not specified)
-  interpolation = "basic";
+  interpolation = "auto"; // "auto" picks "vernier" on low-power CPUs such as the Raspberry Pi; "basic" is no longer recommended upstream
   output_backend = "alsa";
   mdns_backend = "avahi";
   volume_control_profile = "standard";
