@@ -1,3 +1,14 @@
+hifiberry-shairport (1:5.5.0.3) stable; urgency=medium
+
+  * Upgrades reload the user manager before restarting shairport, and use
+    try-restart, so the upgraded unit file is used and a player switched off
+    in the WebUI is no longer started by an upgrade. Removal stops shairport
+    in the HiFiBerry user's manager: the prerm stopped a system unit of that
+    name, which does not exist, so a removed player kept running until the
+    next reboot or login.
+
+ -- HiFiBerry <support@hifiberry.com>  Mon, 09 Nov 2026 14:52:10 +0000
+
 hifiberry-shairport (1:5.5.0.2) stable; urgency=medium
 
   * start-shairport: fix the mixer index lookup. It called
