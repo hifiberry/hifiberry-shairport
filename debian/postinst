@@ -143,7 +143,7 @@ DBUSEOF
                 systemctl reload dbus >/dev/null 2>&1 || systemctl reload dbus.service >/dev/null 2>&1 || true
                 HB_UID=$(id -u "$HB_USER" 2>/dev/null)
                 if [ -n "$HB_UID" ] && [ -d "/run/user/$HB_UID" ]; then
-                    # The restart itself happens after #DEBHELPER#, below.
+                    # The restart itself happens further down, after the debhelper block.
                     RESTART_SHAIRPORT_UID="$HB_UID"
                 fi
             fi
