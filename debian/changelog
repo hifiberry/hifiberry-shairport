@@ -19,6 +19,8 @@ hifiberry-shairport (1:5.6.2.1) stable; urgency=medium
     instead.
   * postinst: restart shairport only after nqptp has been restarted, so the
     new shairport-sync never runs against the old nqptp.
+  * prerm: stop nqptp on removal without disabling it. A removal followed by
+    a reinstall left nqptp disabled, and AirPlay 2 without its clock.
   * New installations get interpolation "auto" instead of "basic" in
     /etc/shairport-sync.conf. Existing configurations are not touched.
 
