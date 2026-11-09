@@ -22,7 +22,7 @@
                     "label": "AirPlay 1 (legacy)"
                 }
             ],
-            "description": "AirPlay 2 supports multi-room and is the default. Choose AirPlay 1 only if a device will not connect. Takes effect the next time the player starts."
+            "description": "AirPlay 2 supports multi-room and is the default. Choose AirPlay 1 only if a device will not connect. Saving restarts the player, so the change applies at once."
         }
     ]
 }
