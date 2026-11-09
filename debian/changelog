@@ -1,3 +1,16 @@
+hifiberry-shairport (1:5.5.0.2) stable; urgency=medium
+
+  * start-shairport: fix the mixer index lookup. It called
+    "config-soundcard --hw i--no-eeprom", which config-soundcard rejects
+    with a usage error, so mixer_device always fell back to hw:0. That is
+    only right when the HiFiBerry card happens to be card 0; with another
+    card in front of it, AirPlay volume drove the wrong card.
+  * The AirPlay version setting no longer says it takes effect the next
+    time the player starts: with hifiberry-configurator 2.18.2 or later,
+    saving it restarts the player (hifiberry/hifiberry-os#672).
+
+ -- HiFiBerry <support@hifiberry.com>  Mon, 09 Nov 2026 14:32:55 +0000
+
 hifiberry-shairport (1:5.5.0.1) stable; urgency=medium
 
   * Update shairport-sync to 5.5 (was 5.2.3). Multiple security fixes,
