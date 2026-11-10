@@ -143,15 +143,8 @@ DBUSEOF
                 systemctl reload dbus >/dev/null 2>&1 || systemctl reload dbus.service >/dev/null 2>&1 || true
                 HB_UID=$(id -u "$HB_USER" 2>/dev/null)
                 if [ -n "$HB_UID" ] && [ -d "/run/user/$HB_UID" ]; then
-                    # Reload first, so an upgraded unit file is used, and
-                    # try-restart, so a player switched off in the WebUI is not
-                    # started by an upgrade.
-                    systemd-run --uid "$HB_UID" --setenv XDG_RUNTIME_DIR="/run/user/$HB_UID" \
-                        --pipe --wait --quiet --collect \
-                        systemctl --user daemon-reload >/dev/null 2>&1 || true
-                    systemd-run --uid "$HB_UID" --setenv XDG_RUNTIME_DIR="/run/user/$HB_UID" \
-                        --pipe --wait --quiet --collect \
-                        systemctl --user try-restart shairport.service >/dev/null 2>&1 || true
+                    # The restart itself happens further down, after the debhelper block.
+                    RESTART_SHAIRPORT_UID="$HB_UID"
                 fi
             fi
         fi
@@ -201,3 +194,18 @@ PYEOF
 esac
 
 #DEBHELPER#
+
+# Restart shairport only now, after the debhelper block above has restarted
+# nqptp. shairport-sync and nqptp talk through a shared memory interface whose
+# version both must agree on (SMI 11 since shairport-sync 5.6 / nqptp 1.2.9),
+# so a new shairport must not come up against the old nqptp. Reload first, so
+# an upgraded unit file is used, and try-restart, so a player switched off in
+# the WebUI is not started by an upgrade.
+if [ -n "${RESTART_SHAIRPORT_UID:-}" ]; then
+    systemd-run --uid "$RESTART_SHAIRPORT_UID" --setenv XDG_RUNTIME_DIR="/run/user/$RESTART_SHAIRPORT_UID" \
+        --pipe --wait --quiet --collect \
+        systemctl --user daemon-reload >/dev/null 2>&1 || true
+    systemd-run --uid "$RESTART_SHAIRPORT_UID" --setenv XDG_RUNTIME_DIR="/run/user/$RESTART_SHAIRPORT_UID" \
+        --pipe --wait --quiet --collect \
+        systemctl --user try-restart shairport.service >/dev/null 2>&1 || true
+fi

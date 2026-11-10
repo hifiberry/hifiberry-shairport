@@ -1,8 +1,8 @@
 #!/usr/bin/make -f
 
 # Shairport Sync version configuration
-SHAIRPORT_VERSION ?= 5.5
-SHAIRPORT_COMMIT ?= 663499543b535de0e61e0b67afce27f2d637f938
+SHAIRPORT_VERSION ?= 5.6.2
+SHAIRPORT_COMMIT ?= 0a34fbda83724cc06266aadcf7c88acc8fef4e7d
 
 %:
 	dh $@
@@ -11,7 +11,7 @@ override_dh_auto_configure:
 	# Download and build NQPTP first
 	@echo "Building NQPTP..."
 	git clone https://github.com/mikebrady/nqptp.git nqptp
-	cd nqptp && git checkout 1.2.6
+	cd nqptp && git checkout 1.2.9
 	cd nqptp && autoreconf -fi && ./configure --with-systemd-startup && make
 	
 	# Download and build metadata reader

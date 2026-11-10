@@ -4,7 +4,9 @@ set -e
 # shairport.service is a systemd *user* unit of the HiFiBerry user, so it has
 # to be stopped inside that user's manager: a system-level stop of that name
 # found no unit and left the player running after removal. nqptp is a system
-# unit and is stopped as before.
+# unit: it is stopped, but not disabled -- disabling it here was recorded as
+# the administrator's choice, so a later reinstall left AirPlay 2 without its
+# clock. debhelper's own scripts take care of the unit on purge.
 user_systemctl() {
     [ -d /run/systemd/system ] || return 0
     [ -f /etc/hifiberry.user ] || return 0
@@ -22,7 +24,6 @@ if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
     user_systemctl stop shairport.service
     if [ -d /run/systemd/system ]; then
         deb-systemd-invoke stop nqptp.service >/dev/null || true
-        deb-systemd-helper disable nqptp.service >/dev/null || true
     fi
 fi
 

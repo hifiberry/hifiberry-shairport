@@ -2,9 +2,13 @@
     "shairport": {
         "enable": true,
         "port": 5555,
-        "_comment": "ShairportSync metadata listener for AirPlay streams. Requires shairport-sync to be configured with metadata UDP output.",
-        "systemd_unit": "shairport-sync",
+        "_comment": "AirPlay player. audiocontrol reads and controls shairport-sync over MPRIS; set \"metadata_source\": \"udp\" to read the UDP metadata socket on \"port\" instead.",
         "coverart_dir": "/tmp/shairport-sync/.cache/coverart",
-        "_coverart_comment": "Directory to monitor for new cover art files. The watcher will automatically detect new image files and use them as album art."
+        "_coverart_comment": "Directory shairport-sync writes cover art to. Only files from this directory are served as cover art.",
+        "session_ports": [
+            7000,
+            5000
+        ],
+        "_session_ports_comment": "Workaround: shairport-sync reports Stopped 10-30 s into a pause. While a sender has an open connection on one of these ports (AirPlay 2, AirPlay 1), audiocontrol keeps the song and shows it as paused. [] turns this off."
     }
 }

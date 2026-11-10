@@ -1,3 +1,38 @@
+hifiberry-shairport (1:5.6.2.1) stable; urgency=medium
+
+  * Update shairport-sync to 5.6.2 (was 5.5) and nqptp to 1.2.9 (was 1.2.6).
+    The two must be updated together: they share a clock interface whose
+    version changed (SMI 11), and 5.6 cannot use the old nqptp.
+  * AirPlay 2 fixes from upstream: sync corrections kept working only for
+    the first 2^31 frames (about 13.5 hours at 44.1 kHz) and RTP timestamps
+    overflowed in long sessions; SETUP failed on hosts with many network
+    interfaces; audio packets with unrecognised SSRCs are handled better.
+  * AirPlay 2 can now be remote-controlled: play, pause, next and previous,
+    and shuffle and repeat, over MPRIS. AirPlay 2 metadata now comes from
+    the sender's now-playing information (title, artist, album, artwork,
+    duration, elapsed time) and is exported over MPRIS.
+  * The AirPlay 1 build now decodes ALAC with FFmpeg instead of the
+    Hammerton decoder, which upstream deprecates as a security risk.
+  * Breaks hifiberry-audiocontrol before 0.24.0. shairport-sync 5.6 no
+    longer sends AirPlay 2 titles to the UDP metadata socket older
+    audiocontrol versions read; 0.24.0 reads shairport-sync over MPRIS
+    instead.
+  * postinst: restart shairport only after nqptp has been restarted, so the
+    new shairport-sync never runs against the old nqptp.
+  * prerm: stop nqptp on removal without disabling it. A removal followed by
+    a reinstall left nqptp disabled, and AirPlay 2 without its clock.
+  * New installations get interpolation "auto" instead of "basic" in
+    /etc/shairport-sync.conf. Existing configurations are not touched.
+  * The audiocontrol player definition no longer names a systemd unit. It
+    named shairport-sync, which does not exist (shairport runs as the user
+    unit shairport.service), so Play without an AirPlay session tried to
+    restart a missing unit. audiocontrol now refuses that command instead.
+  * The audiocontrol player definition sets session_ports, so a paused
+    AirPlay source stays in the WebUI while it is connected (a workaround
+    for shairport-sync reporting Stopped during a pause).
+
+ -- HiFiBerry <support@hifiberry.com>  Mon, 09 Nov 2026 16:49:07 +0000
+
 hifiberry-shairport (1:5.5.0.3) stable; urgency=medium
 
   * Upgrades reload the user manager before restarting shairport, and use

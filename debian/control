@@ -67,6 +67,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
          adduser,
          hifiberry-configurator (>= 2.17.6)
 Provides: shairport-sync, nqptp
+Breaks: hifiberry-audiocontrol (<< 0.24.0)
 Conflicts: shairport-sync, nqptp
 Replaces: shairport-sync, nqptp
 Description: AirPlay audio player with NQPTP (HiFiBerry build)
