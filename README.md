@@ -69,6 +69,12 @@ from `/usr/share` rather than `/etc` — configurator lets `/etc` shadow
 `/usr/share`, so a stale copy under `/etc` silently masks the packaged one.
 See the `1:5.2.1.6` and `1:5.2.3.2` changelog entries for the full history.
 
+### AirPlay session states
+
+shairport-sync reports `Stopped` some time into a pause, not only when a
+session ends, and iOS decides what the remote commands do. What was observed
+and how audiocontrol copes is in [`AIRPLAY.md`](AIRPLAY.md).
+
 ## Changelog style
 
 `debian/changelog` entries use the standard Debian layout, and the file is
