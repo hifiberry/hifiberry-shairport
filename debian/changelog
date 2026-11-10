@@ -27,6 +27,9 @@ hifiberry-shairport (1:5.6.2.1) stable; urgency=medium
     named shairport-sync, which does not exist (shairport runs as the user
     unit shairport.service), so Play without an AirPlay session tried to
     restart a missing unit. audiocontrol now refuses that command instead.
+  * The audiocontrol player definition sets session_ports, so a paused
+    AirPlay source stays in the WebUI while it is connected (a workaround
+    for shairport-sync reporting Stopped during a pause).
 
  -- HiFiBerry <support@hifiberry.com>  Mon, 09 Nov 2026 16:49:07 +0000
 
