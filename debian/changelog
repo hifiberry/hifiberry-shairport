@@ -23,6 +23,10 @@ hifiberry-shairport (1:5.6.2.1) stable; urgency=medium
     a reinstall left nqptp disabled, and AirPlay 2 without its clock.
   * New installations get interpolation "auto" instead of "basic" in
     /etc/shairport-sync.conf. Existing configurations are not touched.
+  * The audiocontrol player definition no longer names a systemd unit. It
+    named shairport-sync, which does not exist (shairport runs as the user
+    unit shairport.service), so Play without an AirPlay session did nothing.
+    Without it, Play is only offered while a sender is connected.
 
  -- HiFiBerry <support@hifiberry.com>  Mon, 09 Nov 2026 16:49:07 +0000
 
