@@ -1,3 +1,20 @@
+hifiberry-shairport (1:5.6.3.1) stable; urgency=medium
+
+  * Update shairport-sync to 5.6.3 (was 5.6.2). nqptp stays at 1.2.9.
+  * MPRIS objects are now exported before the bus name appears, so a
+    client that queries the player as soon as it shows up no longer gets
+    "Object does not exist at /org/mpris/MediaPlayer2".
+  * The volume published over D-Bus and MPRIS could be the previous one;
+    it is now stored before it is announced. MPRIS Rate now reads 1.0.
+  * AirPlay 2: the sender's name and device ID are kept when the sender
+    sends them only in the first SETUP, instead of showing those of the
+    previous connection; the start of play is timed correctly when the
+    first frames are skipped.
+  * AirPlay 1: the D-Bus RemoteControl VolumeUp and VolumeDown commands
+    now reach the sender over DACP; before, they did nothing.
+
+ -- HiFiBerry <support@hifiberry.com>  Tue, 10 Nov 2026 14:51:26 +0000
+
 hifiberry-shairport (1:5.6.2.1) stable; urgency=medium
 
   * Update shairport-sync to 5.6.2 (was 5.5) and nqptp to 1.2.9 (was 1.2.6).
